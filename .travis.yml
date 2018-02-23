@@ -1,0 +1,15 @@
+services:
+    - docker
+
+env:
+    global:
+        - COMMIT=${TRAVIS_COMMIT::8}
+        - REPO=vladk1m0/alpine-owa
+
+script:
+  - docker --version
+  - export TAG=`if [ "$TRAVIS_BRANCH" == "master" ]; then echo "latest"; else echo $TRAVIS_BRANCH ; fi`
+  - docker login -u $DOCKER_USER -p $DOCKER_PASS
+  - docker build -t $REPO:$COMMIT --build-arg OWA_VERSION=$TAG .
+  - docker tag $REPO:$COMMIT $REPO:$TAG
+  - docker push $REPO

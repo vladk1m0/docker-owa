@@ -1,0 +1,26 @@
+
+version: '3'
+services:
+  app:
+    image: vladk1m0/alpine-owa:latest
+    depends_on:
+      - db
+    networks:
+      - owa_net
+    ports:
+      - 9080:80
+  db:
+    image: mysql
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_DATABASE
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    networks:
+      - owa_net
+networks: 
+  owa_net:
+    driver: bridge
+  
