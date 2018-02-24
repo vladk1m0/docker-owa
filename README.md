@@ -3,7 +3,7 @@ Open Web Analytics docker image based on Alpine Linux.
  Open Web Analytics docker image depends on PHP-FPM 5.x & Nginx and build on [Alpine Linux](http://www.alpinelinux.org/).  
 [Open Web Analytics (OWA)](http://www.openwebanalytics.com) is open source web analytics software licensed under GPL and provides website owners and developers with easy ways to add web analytics to their sites using simple Javascript, PHP, or REST based APIs.  
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/vladk1m0/alpine-owa.svg)](https://hub.docker.com/r/vladk1m0/alpine-owa/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)[![Build Status](https://travis-ci.org/vladk1m0/alpine-owa.svg?branch=master)](https://travis-ci.org/vladk1m0/alpine-owa)[![Docker Pulls](https://img.shields.io/docker/pulls/vladk1m0/alpine-owa.svg)](https://hub.docker.com/r/vladk1m0/alpine-owa/)
 
 How to use this image
 -----
