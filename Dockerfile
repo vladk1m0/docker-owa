@@ -11,13 +11,8 @@ ENV OWA_UID="82" \
     OWA_GROUP="www-data" \
     WEBROOT_DIR=/var/www/html
 
-# Configure nginx
-COPY config/nginx.conf /etc/nginx/nginx.conf \
-# Configure PHP-FPM
-COPY config/owa-www.conf /etc/php5/fpm.d/ \
-COPY config/owa.ini /etc/php5/conf.d/ \
-# Configure supervisord
-COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+# Add OWA configuration
+ADD config /tmp/owa-config
 
 # Add application user and group
 RUN set -ex \
@@ -44,6 +39,12 @@ RUN set -ex \
     php5-ctype \
     php5-gd \
     nginx supervisor curl jq \
+# Setup OWA configuration
+    && cp /tmp/owa-config/nginx.conf /etc/nginx/nginx.conf \
+    && cp /tmp/owa-config/owa-www.conf /etc/php5/fpm.d/ \
+    && cp /tmp/owa-config/owa.ini /etc/php5/conf.d/ \
+    && mkdir -p /etc/supervisor/conf.d \
+    && cp /tmp/owa-config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf \
 # Setup php-fpm unix user/group
     && sed -i "s|user\s*=.*|user = ${OWA_USER}|g" /etc/php5/php-fpm.conf \
     && sed -i "s|group\s*=.*|group = ${OWA_GROUP}|g" /etc/php5/php-fpm.conf \
@@ -61,11 +62,10 @@ RUN set -ex \
     && curl -fsSL -o /tmp/owa.tar.gz "https://github.com/padams/Open-Web-Analytics/archive/$OWA_VERSION.tar.gz" \
     && tar -xzf /tmp/owa.tar.gz -C /tmp \
     && mv /tmp/Open-Web-Analytics-$OWA_VERSION/* $WEBROOT_DIR \
-    && rm /tmp/owa.tar.gz \ 
     && chown -R $OWA_USER:$OWA_GROUP $WEBROOT_DIR/ \
     && chmod -R 0775 $WEBROOT_DIR/ \
     && apk del jq tzdata \
-    && rm -rf /var/cache/apk/*
+    && rm -rf /var/cache/apk/* /tmp/owa.tar.gz /tmp/owa-config 
 
 WORKDIR $WEBROOT_DIR
 EXPOSE 80 443
