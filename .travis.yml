@@ -12,4 +12,4 @@ script:
   - docker login -u $DOCKER_USER -p $DOCKER_PASS
   - docker build -t $REPO:$COMMIT --build-arg OWA_VERSION=$TAG .
   - docker tag $REPO:$COMMIT $REPO:$TAG
-  - docker push $REPO
+  - docker push $REPO:$TAG
