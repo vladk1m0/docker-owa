@@ -64,7 +64,7 @@ RUN rm -rf /etc/localtime \
 ENV WEBROOT_DIR=/var/www/html
 RUN mkdir -p $WEBROOT_DIR
 
-RUN if [ "x$OWA_VERSION" = "x" ] ; then \
+RUN if [ "x$OWA_VERSION" = "x" ] | [ "$OWA_VERSION" = "latest" ] ; then \
     OWA_VERSION=$(curl -L -s -H 'Accept: application/json' https://api.github.com/repos/padams/Open-Web-Analytics/releases/latest| jq '.tag_name'| tr -d \") ; \
     fi \
     && echo "Install Open Web Analytics (OWA) version $OWA_VERSION" \
