@@ -9,7 +9,7 @@ How to use this image
 -----
 Start the Docker containers:
 ```
-docker run -p 8080:80 --name my-owa --link my-mysql:db -d vladk1m0/alpine-owa
+docker run -p 8080:80 --name my-owa --link my-mysql:db -d vladk1m0/docker-owa
 ```
 Once started, you'll arrive at the configuration wizard.   
 At the Database Setup step, please enter the following
