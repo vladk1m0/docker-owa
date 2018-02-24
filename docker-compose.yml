@@ -2,12 +2,20 @@ version: '3'
 services:
   app:
     image: vladk1m0/docker-owa:latest
+    container_name: open-web-analytics
     depends_on:
       - db
     networks:
       - owa_net
+    environment:
+      - TIME_ZONE="Europe/Moscow" # Default value UTC
     ports:
       - 8080:80
+    logging:
+      driver: json-file
+      options:
+          max-size: "10m"
+          max-file: "5"
   db:
     image: mysql
     volumes:
@@ -19,7 +27,11 @@ services:
       - MYSQL_PASSWORD
     networks:
       - owa_net
+    logging:
+      driver: json-file
+      options:
+          max-size: "10m"
+          max-file: "5"
 networks: 
   owa_net:
-    driver: bridge
-  
+    driver: bridge  

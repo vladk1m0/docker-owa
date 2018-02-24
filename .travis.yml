@@ -5,6 +5,8 @@ env:
     global:
         - COMMIT=${TRAVIS_COMMIT::8}
         - REPO=vladk1m0/docker-owa
+on:
+    tags: true
 
 script:
   - docker --version

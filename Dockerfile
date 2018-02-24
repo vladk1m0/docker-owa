@@ -3,7 +3,6 @@ LABEL Maintainer="Vladislav Mostovoi <vladkimo@gmail.com>" \
       Description="Docker image for Open Web Analytics with Nginx & PHP-FPM 5.x based on Alpine Linux."
 
 ARG OWA_VERSION
-ARG TIMEZONE=Europe/Moscow
 
 ENV OWA_UID="82" \
     OWA_USER="www-data" \
@@ -45,14 +44,11 @@ RUN set -ex \
     && cp /tmp/owa-config/owa.ini /etc/php5/conf.d/ \
     && mkdir -p /etc/supervisor/conf.d \
     && cp /tmp/owa-config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf \
+    && cp /tmp/owa-config/entrypoint.sh /usr/bin/owa-entrypoint.sh \
+    && chmod 0775 /usr/bin/owa-entrypoint.sh \
 # Setup php-fpm unix user/group
     && sed -i "s|user\s*=.*|user = ${OWA_USER}|g" /etc/php5/php-fpm.conf \
     && sed -i "s|group\s*=.*|group = ${OWA_GROUP}|g" /etc/php5/php-fpm.conf \
-# Setup timezone
-    && rm -rf /etc/localtime \
-    && ln -s /usr/share/zoneinfo/${TIMEZONE} /etc/localtime \
-    && echo "${TIMEZONE}" > /etc/timezone \
-    && sed -i "s|;*date.timezone\s*=.*|date.timezone = \"${TIMEZONE}\"|i" /etc/php5/conf.d/owa.ini \
 # Add Open Web Analytics (OWA)
     && mkdir -p $WEBROOT_DIR \
     && if [ "x$OWA_VERSION" = "x" ] | [ "$OWA_VERSION" = "latest" ] ; then \
@@ -64,9 +60,10 @@ RUN set -ex \
     && mv /tmp/Open-Web-Analytics-$OWA_VERSION/* $WEBROOT_DIR \
     && chown -R $OWA_USER:$OWA_GROUP $WEBROOT_DIR/ \
     && chmod -R 0775 $WEBROOT_DIR/ \
-    && apk del jq tzdata \
+    && apk del jq \
     && rm -rf /var/cache/apk/* /tmp/owa.tar.gz /tmp/owa-config 
 
 WORKDIR $WEBROOT_DIR
 EXPOSE 80 443
+ENTRYPOINT ["/usr/bin/owa-entrypoint.sh"]
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
