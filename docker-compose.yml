@@ -17,7 +17,7 @@ services:
           max-size: "10m"
           max-file: "5"
   db:
-    image: mysql
+    image: mysql:5.7
     volumes:
       - ./mysql:/var/lib/mysql
     environment:
@@ -25,6 +25,8 @@ services:
       - MYSQL_DATABASE
       - MYSQL_USER
       - MYSQL_PASSWORD
+    ports:
+      - 3306:3306
     networks:
       - owa_net
     logging:
