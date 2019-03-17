@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   app:
     image: vladk1m0/docker-owa:latest
@@ -14,8 +14,8 @@ services:
     logging:
       driver: json-file
       options:
-          max-size: "10m"
-          max-file: "5"
+        max-size: "10m"
+        max-file: "5"
   db:
     image: mysql:5.7
     volumes:
@@ -25,15 +25,13 @@ services:
       - MYSQL_DATABASE
       - MYSQL_USER
       - MYSQL_PASSWORD
-    ports:
-      - 3306:3306
     networks:
       - owa_net
     logging:
       driver: json-file
       options:
-          max-size: "10m"
-          max-file: "5"
-networks: 
+        max-size: "10m"
+        max-file: "5"
+networks:
   owa_net:
-    driver: bridge  
+    driver: bridge

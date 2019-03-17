@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.8
 LABEL Maintainer="Vladislav Mostovoi <vladkimo@gmail.com>" \
       Description="Docker image for Open Web Analytics with Nginx & PHP-FPM 5.x based on Alpine Linux."
 
